@@ -35,7 +35,7 @@ constructor(
 @response(200, {
   description: 'creacion de un Contexto',
   content:{
-    'aplication/json':{
+    'application/json':{
       schema: getModelSchemaRef(ModelInsertContexto),
     },
   },
@@ -43,7 +43,7 @@ constructor(
 async crearcontexto(
   @requestBody({
     content:{
-      'aplication/json':{
+      'application/json':{
         schema: getModelSchemaRef(ModelInsertContexto),
       },
     },
@@ -96,7 +96,7 @@ async crearcontexto(
 @response(200, {
   description: 'creacion de una pregunta de un contexto',
   content:{
-    'aplication/json':{
+    'application/json':{
       schema: getModelSchemaRef(ModelInsertPregunta),
     },
   },
@@ -104,7 +104,7 @@ async crearcontexto(
 async crearpregunta(
   @requestBody({
     content:{
-      'aplication/json':{
+      'application/json':{
         schema: getModelSchemaRef(ModelInsertPregunta),
       },
     },
@@ -157,7 +157,7 @@ async crearpregunta(
 @response(200, {
   description: 'creacion de una opcion de la pregunta',
   content:{
-    'aplication/json':{
+    'application/json':{
       schema: getModelSchemaRef(ModelInsertOpcion),
     },
   },
@@ -165,7 +165,7 @@ async crearpregunta(
 async crearopcion(
   @requestBody({
     content:{
-      'aplication/json':{
+      'application/json':{
         schema: getModelSchemaRef(ModelInsertOpcion),
       },
     },
