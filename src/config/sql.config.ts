@@ -14,4 +14,8 @@ export namespace SQLConfig {
   export const CrearEstudiante: string = "SELECT FUN_INSERTAR_ESTUDIANTE_JSON($1,$2,$3,$4,$5,$6,$7);";
 
 
+  //FUNCIONES PARA EL CONTROLADOR AREASTEMAS ---------------------------------------------------------------------------------------------------------
+  export const ObtenerAreasEvaluar: string = "SELECT FUN_CONSULTAR_AREAS_EVALUAR();";
+  export const ObtenerTemasEvaluar: string = "SELECT FUN_CONSULTAR_TEMAS_AREAS($1);";
+
 }

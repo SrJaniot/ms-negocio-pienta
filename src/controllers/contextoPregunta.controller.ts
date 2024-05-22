@@ -80,7 +80,7 @@ async crearcontexto(
   }catch(error){
     return {
       "CODIGO": 500,
-      "MENSAJE": "Error al insertar datos  del TORNEO en la funcion de postgres ERROR POSTGRES",
+      "MENSAJE": "ERROR POSTGRES",
       "DATOS": error
     };
   }
