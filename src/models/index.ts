@@ -8,3 +8,5 @@ export * from './model-insert-area-estudio.model';
 export * from './model-insert-programa-estudio.model';
 export * from './model-insert-grupo-estudio.model';
 export * from './model-insert-estudiante.model';
+export * from './model-update-contexto.model';
+export * from './id-entero.model';

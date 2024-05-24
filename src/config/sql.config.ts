@@ -4,6 +4,10 @@ export namespace SQLConfig {
   export const CrearContexto: string = "SELECT FUN_INSERTAR_CONTEXTO_JSON($1,$2,$3,$4);";
   export const CrearPregunta: string = "SELECT FUN_INSERTAR_PREGUNTA_JSON($1,$2,$3,$4,$5);";
   export const CrearOpcion: string = "SELECT FUN_INSERTAR_OPCIONES_PREGUNTA_JSON($1,$2,$3);";
+  export const ObtenerContextos: string = "SELECT FUN_CONSULTAR_CONTEXTO();";
+  export const ObtenerContextoId: string = "SELECT FUN_CONSULTAR_CONTEXTO_ID($1);";
+  export const ActualizarContexto: string = "SELECT FUN_ACTUALIZAR_CONTEXTO($1,$2,$3,$4,$5);";
+  export const EliminarContexto: string = "SELECT FUN_ELIMINAR_CONTEXTO($1);";
 
   //FUNCIONES PARA EL CONTROLADOR DE INSTITUCION ---------------------------------------------------------------------------------------------------------
   export const CrearInstitucion: string = "SELECT FUN_INSERTAR_INSTITUCION_JSON($1,$2,$3,$4,$5,$6);";
