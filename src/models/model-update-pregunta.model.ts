@@ -1,36 +1,42 @@
 import {Model, model, property} from '@loopback/repository';
 
 @model()
-export class ModelInsertPregunta extends Model {
+export class ModelUpdatePregunta extends Model {
   @property({
     type: 'number',
     required: true,
   })
-  Id_Contexto: number;
+  id_pregunta: number;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  id_contexto: number;
 
   @property({
     type: 'string',
     required: true,
   })
-  Texto_Pregunta: string;
+  enunciado_pregunta: string;
 
   @property({
     type: 'number',
     required: true,
   })
-  Tipo_pregunta: number;
+  tipo_pregunta: number;
 
   @property({
     type: 'number',
     required: true,
   })
-  Puntaje_Pregunta: number;
+  puntaje_pregunta: number;
 
   @property({
     type: 'string',
     required: true,
   })
-  Autor_Pregunta: string;
+  autor_pregunta: string;
 
   @property({
     type: 'string',
@@ -51,13 +57,13 @@ export class ModelInsertPregunta extends Model {
   Layout_pregunta: string;
 
 
-  constructor(data?: Partial<ModelInsertPregunta>) {
+  constructor(data?: Partial<ModelUpdatePregunta>) {
     super(data);
   }
 }
 
-export interface ModelInsertPreguntaRelations {
+export interface ModelUpdatePreguntaRelations {
   // describe navigational properties here
 }
 
-export type ModelInsertPreguntaWithRelations = ModelInsertPregunta & ModelInsertPreguntaRelations;
+export type ModelUpdatePreguntaWithRelations = ModelUpdatePregunta & ModelUpdatePreguntaRelations;

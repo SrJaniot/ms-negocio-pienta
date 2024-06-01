@@ -1,6 +1,8 @@
 export namespace ConfiguracionGeneral {
   //-------------------------carpetas -------------------------------------
   export const carpetaFotosContexto: string = "../../../../archivos/fotoscontexto";
+  export const carpetaFotosPregunta: string = "../../../../archivos/fotospregunta";
+  export const carpetaFotosOpcion: string = "../../../../archivos/fotosopcion";
   //-------------------------archivos -------------------------------------
 
   export const campodeNombreArchivo: string = "file";

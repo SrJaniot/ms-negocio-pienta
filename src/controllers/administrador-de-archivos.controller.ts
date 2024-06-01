@@ -74,6 +74,84 @@ export class AdministradorDeArchivosController {
 
 
 
+  //@authenticate('auth')
+  @post('/cargar-archivo-pregunta', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Archivo a cargar',
+      },
+    },
+  })
+  async CargarArchivopregunta(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const filePath = path.join(__dirname, ConfiguracionGeneral.carpetaFotosPregunta);
+    let res = await this.StoreFileToPath(
+      filePath,
+      ConfiguracionGeneral.campodeNombreArchivo,
+      request,
+      response,
+      ConfiguracionGeneral.extensionesPermitidasImagenes,
+    );
+    if (res) {
+      const filename = response.req?.file?.filename;
+      if (filename) {
+        return {file: filename};
+      }
+    }
+    return res;
+  }
+
+
+
+
+  //@authenticate('auth')
+  @post('/cargar-archivo-opcion', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Archivo a cargar',
+      },
+    },
+  })
+  async CargarArchivoopcion(
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+    @requestBody.file() request: Request,
+  ): Promise<object | false> {
+    const filePath = path.join(__dirname, ConfiguracionGeneral.carpetaFotosOpcion);
+    let res = await this.StoreFileToPath(
+      filePath,
+      ConfiguracionGeneral.campodeNombreArchivo,
+      request,
+      response,
+      ConfiguracionGeneral.extensionesPermitidasImagenes,
+    );
+    if (res) {
+      const filename = response.req?.file?.filename;
+      if (filename) {
+        return {file: filename};
+      }
+    }
+    return res;
+  }
+
+
+
+
 
 
 
@@ -186,6 +264,19 @@ async downloadFileByName(
   return response;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Get the folder when files are uploaded by type
  * @param type
@@ -198,6 +289,10 @@ private ObtenerArchivosPorTipo(tipo: number) {
       filePath = path.join(__dirname, ConfiguracionGeneral.carpetaFotosContexto);
       break;
     case 2:
+      filePath = path.join(__dirname, ConfiguracionGeneral.carpetaFotosPregunta);
+      break;
+    case 3:
+      filePath = path.join(__dirname, ConfiguracionGeneral.carpetaFotosOpcion);
       break;
   }
   return filePath;

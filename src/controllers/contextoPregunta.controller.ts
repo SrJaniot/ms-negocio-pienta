@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,  IdEntero,  ModelInsertContexto, ModelInsertOpcion, ModelInsertPregunta, ModelUpdateContexto} from '../models';
+import {GenericModel,  IdEntero,  ModelInsertContexto, ModelInsertOpcion, ModelInsertPregunta, ModelInsertPreguntaTemas, ModelUpdateContexto, ModelUpdatePregunta} from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -58,7 +58,8 @@ async crearcontexto(
       data.Nom_contexto,
       data.Desc_contexto,
       data.Nom_archivo_contexto,
-      data.Autor_contexto
+      data.Autor_contexto,
+      data.Tipo_contexto
     ];
     const result = await this.genericRepository.dataSource.execute(sql, params);
     //console.log(result[0]);
@@ -120,7 +121,10 @@ async crearpregunta(
       data.Texto_Pregunta,
       data.Tipo_pregunta,
       data.Puntaje_Pregunta,
-      data.Autor_Pregunta
+      data.Autor_Pregunta,
+      data.Imagen_pregunta,
+      data.Tipo_pregunta_contenido,
+      data.Layout_pregunta
     ];
     const result = await this.genericRepository.dataSource.execute(sql, params);
     //console.log(result[0]);
@@ -252,8 +256,7 @@ async crearopcion(
  }
 
 
- //METODO GET PARA OBTENER DATOS DE LA TABLA TEMAS USANDO EL REPOSITORIO GENERICO PEDIR PARAMETRO ID_AREA_EVALUAR
-//METODO GET PARA OBTENER DATOS DE LA TABLA TEMAS USANDO EL REPOSITORIO GENERICO PEDIR PARAMETRO ID_AREA_EVALUAR
+//METODO GET PARA OBTENER DATOS DE LA TABLA CONTEXTO USANDO EL REPOSITORIO GENERICO PEDIR PARAMETRO ID_AREA_EVALUAR
 @get('/ObtenerContexto/{id_contexto}')
 @response(200, {
  description: 'Obtener Contexto por id',
@@ -329,7 +332,8 @@ async Actualizarcontexto(
       data.Nom_contexto,
       data.Desc_contexto,
       data.Nom_archivo_contexto,
-      data.Autor_contexto
+      data.Autor_contexto,
+      data.Tipo_contexto
     ];
     const result = await this.genericRepository.dataSource.execute(sql, params);
     //console.log(result[0]);
@@ -363,7 +367,7 @@ async Actualizarcontexto(
 
 @post('/EliminarContexto')
 @response(200, {
-  description: 'Actualizar  un Contexto',
+  description: 'eliminar  un Contexto',
   content:{
     'application/json':{
       schema: getModelSchemaRef(IdEntero),
@@ -413,6 +417,332 @@ async Eliminarcontexto(
     };
   }
 }
+
+//METODO PARA RELACIONAR UNA PREGUNTA CON UN TEMA DE AREA
+
+@post('/Relacionar-Pregunta-tema')
+@response(200, {
+  description: 'Crear una relacion entre una pregunta y un tema',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelInsertPreguntaTemas),
+    },
+  },
+})
+async relacionar_pregunta_area(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelInsertPreguntaTemas),
+      },
+    },
+  })
+  data: ModelInsertPreguntaTemas,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.RelacionarPreguntaTema;
+    const params =[
+      data.id_pregunta,
+      data.id_tema_area,
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_INSERTAR_PREGUNTA_TEMAS_JSON() fun_insertar_pregunta_temas_json()
+    if(result[0].fun_insertar_pregunta_temas_json.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_insertar_pregunta_temas_json.CODIGO,
+        "MENSAJE": result[0].fun_insertar_pregunta_temas_json.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_insertar_pregunta_temas_json.CODIGO,
+      "MENSAJE": result[0].fun_insertar_pregunta_temas_json.MENSAJE,
+      "DATOS": result[0].fun_insertar_pregunta_temas_json.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "Error al insertar datos  del OPCION en la funcion de postgres ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+//METODO PARA RELACIONAR UNA PREGUNTA CON UN TEMA DE AREA UPDATE
+
+@post('/Relacionar-Pregunta-tema-UPDATE')
+@response(200, {
+  description: 'Crear una relacion entre una pregunta y un tema UPDATE',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelInsertPreguntaTemas),
+    },
+  },
+})
+async relacionar_pregunta_area_UPDATE(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelInsertPreguntaTemas),
+      },
+    },
+  })
+  data: ModelInsertPreguntaTemas,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.RelacionarPreguntaTemaUPDATE;
+    const params =[
+      data.id_pregunta,
+      data.id_tema_area,
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ACTUALIZAR_PREGUNTA_TEMAS()  fun_actualizar_pregunta_temas()
+    if(result[0].fun_actualizar_pregunta_temas.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_actualizar_pregunta_temas.CODIGO,
+        "MENSAJE": result[0].fun_actualizar_pregunta_temas.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_actualizar_pregunta_temas.CODIGO,
+      "MENSAJE": result[0].fun_actualizar_pregunta_temas.MENSAJE,
+      "DATOS": result[0].fun_actualizar_pregunta_temas.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "Error al insertar datos  del OPCION en la funcion de postgres ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+//METODO PARA OBTENER LAS PREGUNTAS DE UN TEMA
+
+@get('/ObtenerPreguntas')
+ @response(200, {
+   description: 'Obtener Preguntas',
+   content:{
+     'application/json':{
+       schema: getModelSchemaRef(GenericModel),
+     },
+   },
+ })
+ async obtenerPreguntas():Promise<object>{
+   try{
+     //const sql =SQLConfig.crearContexto;
+     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+     const sql = SQLConfig.ObtenerPreguntas;
+     const result = await this.genericRepository.dataSource.execute(sql);
+     // FUN_CONSULTAR_PREGUNTAS()  fun_consultar_preguntas()
+
+     if(result[0].fun_consultar_preguntas.CODIGO !=200){
+       return {
+         "CODIGO": result[0].fun_consultar_preguntas.CODIGO,
+         "MENSAJE": result[0].fun_consultar_preguntas.MENSAJE,
+         "DATOS": null
+       };
+     }
+     return {
+       "CODIGO": result[0].fun_consultar_preguntas.CODIGO,
+       "MENSAJE": result[0].fun_consultar_preguntas.MENSAJE,
+       "DATOS": result[0].fun_consultar_preguntas.DATOS
+     };
+
+
+   }catch(error){
+     return {
+       "CODIGO": 500,
+       "MENSAJE": "Error POSTGRES",
+       "DATOS": error
+     };
+   }
+ }
+
+ //METODO GET PARA OBTENER DATOS DE LA TABLA PREGUNTA USANDO EL REPOSITORIO GENERICO PEDIR PARAMETRO ID_AREA_EVALUAR
+@get('/ObtenerPregunta/{id_pregunta}')
+@response(200, {
+ description: 'Obtener pregunta por id',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async obtenerPreguntaID(
+ @param.path.number('id_pregunta') id_pregunta: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerPreguntaId;
+   const params =[
+    id_pregunta
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_CONSULTAR_PREGUNTA_ID() fun_consultar_pregunta_id()
+   if(result[0].fun_consultar_pregunta_id.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_consultar_pregunta_id.CODIGO,
+       "MENSAJE": result[0].fun_consultar_pregunta_id.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_consultar_pregunta_id.CODIGO,
+     "MENSAJE": result[0].fun_consultar_pregunta_id.MENSAJE,
+     "DATOS": result[0].fun_consultar_pregunta_id.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+
+//METODO PARA ACTUALIZAR UN PREGUNTA POR ID
+
+@post('/ActualizarPregunta')
+@response(200, {
+  description: 'Actualizar  una Pregunta',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelUpdatePregunta),
+    },
+  },
+})
+async ActualizarPregunta(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelUpdatePregunta),
+      },
+    },
+  })
+  data: ModelUpdatePregunta,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ActualizarPregunta;
+    const params =[
+      data.id_pregunta,
+      data.id_contexto,
+      data.enunciado_pregunta,
+      data.tipo_pregunta,
+      data.puntaje_pregunta,
+      data.autor_pregunta,
+      data.Imagen_pregunta,
+      data.Tipo_pregunta_contenido,
+      data.Layout_pregunta
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ACTUALIZAR_PREGUNTA() fun_actualizar_pregunta()
+    if(result[0].fun_actualizar_pregunta.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_actualizar_pregunta.CODIGO,
+        "MENSAJE": result[0].fun_actualizar_pregunta.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_actualizar_pregunta.CODIGO,
+      "MENSAJE": result[0].fun_actualizar_pregunta.MENSAJE,
+      "DATOS": result[0].fun_actualizar_pregunta.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+//METODO PARA ELIMINAR UN PREGUNTA POR ID
+
+@post('/EliminarPregunta')
+@response(200, {
+  description: 'eliminar una pregunta',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(IdEntero),
+    },
+  },
+})
+async EliminarPregunta(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(IdEntero),
+      },
+    },
+  })
+  id: IdEntero,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.EliminarPregunta;
+    const params =[
+      id.id
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ELIMINAR_PREGUNTA() fun_eliminar_pregunta()
+    if(result[0].fun_eliminar_pregunta.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_eliminar_pregunta.CODIGO,
+        "MENSAJE": result[0].fun_eliminar_pregunta.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_eliminar_pregunta.CODIGO,
+      "MENSAJE": result[0].fun_eliminar_pregunta.MENSAJE,
+      "DATOS": result[0].fun_eliminar_pregunta.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
 
 
 

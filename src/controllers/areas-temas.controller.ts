@@ -98,10 +98,10 @@ async obtenerTemas(
     const params =[
       id_area_evaluar
     ];
-    console.log(sql);
-    console.log(params);
+    //console.log(sql);
+    //console.log(params);
     const result = await this.genericRepository.dataSource.execute(sql, params);
-    console.log(result[0]);
+    //console.log(result[0]);
     if(result[0].fun_consultar_temas_areas.CODIGO !=200){
       return {
         "CODIGO": result[0].fun_consultar_temas_areas.CODIGO,

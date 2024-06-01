@@ -10,3 +10,5 @@ export * from './model-insert-grupo-estudio.model';
 export * from './model-insert-estudiante.model';
 export * from './model-update-contexto.model';
 export * from './id-entero.model';
+export * from './model-insert-pregunta-temas.model';
+export * from './model-update-pregunta.model';

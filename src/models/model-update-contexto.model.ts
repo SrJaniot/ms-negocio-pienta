@@ -34,6 +34,12 @@ export class ModelUpdateContexto extends Model {
   })
   Autor_contexto: string;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  Tipo_contexto: string;
+
 
   constructor(data?: Partial<ModelUpdateContexto>) {
     super(data);
