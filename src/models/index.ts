@@ -12,3 +12,4 @@ export * from './model-update-contexto.model';
 export * from './id-entero.model';
 export * from './model-insert-pregunta-temas.model';
 export * from './model-update-pregunta.model';
+export * from './model-update-opcion.model';

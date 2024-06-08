@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,  IdEntero,  ModelInsertContexto, ModelInsertOpcion, ModelInsertPregunta, ModelInsertPreguntaTemas, ModelUpdateContexto, ModelUpdatePregunta} from '../models';
+import {GenericModel,  IdEntero,  ModelInsertContexto, ModelInsertOpcion, ModelInsertPregunta, ModelInsertPreguntaTemas, ModelUpdateContexto, ModelUpdateOpcion, ModelUpdatePregunta} from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -184,6 +184,8 @@ async crearopcion(
       data.Id_Pregunta,
       data.Texto_opcion,
       data.Opcion_Correcta,
+      data.Imagen_opcion,
+      data.Tipo_opcion
     ];
     const result = await this.genericRepository.dataSource.execute(sql, params);
     //console.log(result[0]);
@@ -732,6 +734,220 @@ async EliminarPregunta(
       "CODIGO": result[0].fun_eliminar_pregunta.CODIGO,
       "MENSAJE": result[0].fun_eliminar_pregunta.MENSAJE,
       "DATOS": result[0].fun_eliminar_pregunta.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+
+//METODO PARA OBTENER LAS opciones DE UN
+
+@get('/ObtenerOpciones')
+ @response(200, {
+   description: 'Obtener opciones',
+   content:{
+     'application/json':{
+       schema: getModelSchemaRef(GenericModel),
+     },
+   },
+ })
+ async obtenerOpciones():Promise<object>{
+   try{
+     //const sql =SQLConfig.crearContexto;
+     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+     const sql = SQLConfig.ObtenerOpciones;
+     const result = await this.genericRepository.dataSource.execute(sql);
+     // FUN_OBTENER_OPCIONES_PREGUNTA_JSON()   fun_obtener_opciones_pregunta_json()
+
+     if(result[0].fun_obtener_opciones_pregunta_json.CODIGO !=200){
+       return {
+         "CODIGO": result[0].fun_obtener_opciones_pregunta_json.CODIGO,
+         "MENSAJE": result[0].fun_obtener_opciones_pregunta_json.MENSAJE,
+         "DATOS": null
+       };
+     }
+     return {
+       "CODIGO": result[0].fun_obtener_opciones_pregunta_json.CODIGO,
+       "MENSAJE": result[0].fun_obtener_opciones_pregunta_json.MENSAJE,
+       "DATOS": result[0].fun_obtener_opciones_pregunta_json.DATOS
+     };
+
+
+   }catch(error){
+     return {
+       "CODIGO": 500,
+       "MENSAJE": "Error POSTGRES",
+       "DATOS": error
+     };
+   }
+ }
+
+
+ //METODO GET PARA OBTENER DATOS DE LA TABLA OPCIONES USANDO EL REPOSITORIO GENERICO PEDIR PARAMETRO
+@get('/ObtenerOpcion/{id_opcion}')
+@response(200, {
+ description: 'Obtener opcion por id',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async obtenerOpcionID(
+ @param.path.number('id_opcion') id_opcion: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerOpcionId;
+   const params =[
+    id_opcion
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_OPCION_PREGUNTA_JSON() fun_obtener_opcion_pregunta_json()
+   if(result[0].fun_obtener_opcion_pregunta_json.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_opcion_pregunta_json.CODIGO,
+       "MENSAJE": result[0].fun_obtener_opcion_pregunta_json.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_opcion_pregunta_json.CODIGO,
+     "MENSAJE": result[0].fun_obtener_opcion_pregunta_json.MENSAJE,
+     "DATOS": result[0].fun_obtener_opcion_pregunta_json.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+
+
+
+//METODO PARA ACTUALIZAR UN Opcion POR ID
+
+@post('/ActualizarOpcion')
+@response(200, {
+  description: 'Actualizar una Opcion',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelUpdateOpcion),
+    },
+  },
+})
+async ActualizarOpcion(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelUpdateOpcion),
+      },
+    },
+  })
+  data: ModelUpdateOpcion,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ActualizarOpcion;
+    const params =[
+      data.id_opcion,
+      data.id_pregunta,
+      data.Texto_opcion,
+      data.Opcion_Correcta,
+      data.Imagen_opcion,
+      data.Tipo_opcion,
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ACTUALIZAR_OPCIONES_PREGUNTA_JSON() fun_actualizar_opciones_pregunta_json()
+    if(result[0].fun_actualizar_opciones_pregunta_json.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_actualizar_opciones_pregunta_json.CODIGO,
+        "MENSAJE": result[0].fun_actualizar_opciones_pregunta_json.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_actualizar_opciones_pregunta_json.CODIGO,
+      "MENSAJE": result[0].fun_actualizar_opciones_pregunta_json.MENSAJE,
+      "DATOS": result[0].fun_actualizar_opciones_pregunta_json.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+//METODO PARA ELIMINAR UN OPCION POR ID
+
+@post('/EliminarOpcion')
+@response(200, {
+  description: 'eliminar una opcion',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(IdEntero),
+    },
+  },
+})
+async EliminarOpcion(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(IdEntero),
+      },
+    },
+  })
+  id: IdEntero,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.EliminarOpcion;
+    const params =[
+      id.id
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ELIMINAR_OPCIONES_PREGUNTA_JSON() fun_eliminar_opciones_pregunta_json()
+    if(result[0].fun_eliminar_opciones_pregunta_json.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_eliminar_opciones_pregunta_json.CODIGO,
+        "MENSAJE": result[0].fun_eliminar_opciones_pregunta_json.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_eliminar_opciones_pregunta_json.CODIGO,
+      "MENSAJE": result[0].fun_eliminar_opciones_pregunta_json.MENSAJE,
+      "DATOS": result[0].fun_eliminar_opciones_pregunta_json.DATOS
     };
   }catch(error){
     return {

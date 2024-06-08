@@ -1,12 +1,18 @@
 import {Model, model, property} from '@loopback/repository';
 
 @model()
-export class ModelInsertOpcion extends Model {
+export class ModelUpdateOpcion extends Model {
   @property({
     type: 'number',
     required: true,
   })
-  Id_Pregunta: number;
+  id_opcion: number;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  id_pregunta: number;
 
   @property({
     type: 'string',
@@ -33,13 +39,13 @@ export class ModelInsertOpcion extends Model {
   Tipo_opcion: string;
 
 
-  constructor(data?: Partial<ModelInsertOpcion>) {
+  constructor(data?: Partial<ModelUpdateOpcion>) {
     super(data);
   }
 }
 
-export interface ModelInsertOpcionRelations {
+export interface ModelUpdateOpcionRelations {
   // describe navigational properties here
 }
 
-export type ModelInsertOpcionWithRelations = ModelInsertOpcion & ModelInsertOpcionRelations;
+export type ModelUpdateOpcionWithRelations = ModelUpdateOpcion & ModelUpdateOpcionRelations;
