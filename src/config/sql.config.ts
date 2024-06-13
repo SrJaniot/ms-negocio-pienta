@@ -18,6 +18,7 @@ export namespace SQLConfig {
   export const ObtenerOpcionId: string = "SELECT FUN_OBTENER_OPCION_PREGUNTA_JSON($1);";
   export const ActualizarOpcion: string = "SELECT FUN_ACTUALIZAR_OPCIONES_PREGUNTA_JSON($1,$2,$3,$4,$5,$6);";
   export const EliminarOpcion: string = "SELECT FUN_ELIMINAR_OPCIONES_PREGUNTA_JSON($1);";
+  export const ObtenerPreviewPregunta: string = "SELECT FUN_CONSULTAR_CONTEXTO_PREGUNTA_OPCION_PREVIEW($1);";
 
 
 

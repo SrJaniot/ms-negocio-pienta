@@ -964,6 +964,65 @@ async EliminarOpcion(
 
 
 
+ //METODO GET PARA OBTENER DATOS DE LA CONTEXTO/PREGUNTA/OPCIONES USANDO EL REPOSITORIO GENERICO PEDIR PARAMETRO ID_PREGUNTA
+ @get('/ObtenerPreviewPregunta/{id_pregunta}')
+ @response(200, {
+  description: 'Obtener Pregunta por id concatenando opciones y contexto',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(GenericModel),
+    },
+  },
+ })
+ async ObtenerPreviewPregunta(
+  @param.path.number('id_pregunta') id_pregunta: number,
+ ):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ObtenerPreviewPregunta;
+    const params =[
+      id_pregunta
+    ];
+    //console.log(sql);
+    //console.log(params);
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //FUN_CONSULTAR_CONTEXTO_PREGUNTA_OPCION_PREVIEW() fun_consultar_contexto_pregunta_opcion_preview()
+    if(result[0].fun_consultar_contexto_pregunta_opcion_preview.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_consultar_contexto_pregunta_opcion_preview.CODIGO,
+        "MENSAJE": result[0].fun_consultar_contexto_pregunta_opcion_preview.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_consultar_contexto_pregunta_opcion_preview.CODIGO,
+      "MENSAJE": result[0].fun_consultar_contexto_pregunta_opcion_preview.MENSAJE,
+      "DATOS": result[0].fun_consultar_contexto_pregunta_opcion_preview.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "Error POSTGRES",
+      "DATOS": error
+    };
+  }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
