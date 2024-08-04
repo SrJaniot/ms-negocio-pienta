@@ -29,6 +29,15 @@ export namespace SQLConfig {
   export const CrearProgramaEstudio: string = "SELECT FUN_INSERTAR_PROGRAMAS_ESTUDIO_JSON($1,$2,$3,$4);";
   export const CrearGrupoEstudio: string = "SELECT FUN_INSERTAR_GRUPO_ESTUDIO_JSON($1,$2,$3,$4,$5);";
   export const CrearEstudiante: string = "SELECT FUN_INSERTAR_ESTUDIANTE_JSON($1,$2,$3,$4,$5,$6,$7);";
+  export const ObtenerInstituciones: string = "SELECT FUN_CONSULTAR_INSTITUCIONES();";
+  export const ObtenerSede: string = "SELECT FUN_OBTENER_SEDE($1);";
+  export const ActualizarSede: string = "SELECT FUN_ACTUALIZAR_SEDE($1,$2,$3,$4,$5,$6);";
+  export const EliminarSede: string = "SELECT FUN_ELIMINAR_SEDE($1);";
+  export const ObtenerSedes: string = "SELECT FUN_OBTENER_SEDES();";
+  export const ObtenerAreasEstudios: string = "SELECT FUN_OBTENER_AREAS_ESTUDIOS();";
+  export const ActualizarAreaEstudio: string = "SELECT FUN_ACTUALIZAR_AREA_ESTUDIO($1,$2,$3,$4);";
+  export const ObtenerAreaEstudio: string = "SELECT FUN_OBTENER_AREA_ESTUDIO($1);";
+  export const EliminarAreaEstudio: string = "SELECT FUN_ELIMINAR_AREA_ESTUDIO($1);";
 
 
   //FUNCIONES PARA EL CONTROLADOR AREASTEMAS ---------------------------------------------------------------------------------------------------------

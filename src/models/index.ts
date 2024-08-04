@@ -13,3 +13,5 @@ export * from './id-entero.model';
 export * from './model-insert-pregunta-temas.model';
 export * from './model-update-pregunta.model';
 export * from './model-update-opcion.model';
+export * from './model-update-sede.model';
+export * from './model-update-area-estudio.model';
