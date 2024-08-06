@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,   IdEntero,   ModelInsertAreaEstudio,   ModelInsertEstudiante,   ModelInsertGrupoEstudio,   ModelInsertInstitucion, ModelInsertProgramaEstudio, ModelUpdateAreaEstudio, ModelUpdateSede, MoselInsertSede,  } from '../models';
+import {GenericModel,   IdEntero,   ModelInsertAreaEstudio,   ModelInsertEstudiante,   ModelInsertGrupoEstudio,   ModelInsertInstitucion, ModelInsertProgramaEstudio, ModelUpdateAreaEstudio, ModelUpdateGrupoEstudio, ModelUpdateProgramaEstudio, ModelUpdateSede, MoselInsertSede,  } from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -697,6 +697,237 @@ async crearProgramaEestudio(
 }
 
 
+
+
+
+ //METODO GET PARA OBTENER DATOS DE LA TABLA PROGRAMA ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @get('/ObtenerProgramasEstudio')
+ @response(200, {
+   description: 'Obtener Sedes',
+   content:{
+     'application/json':{
+       schema: getModelSchemaRef(GenericModel),
+     },
+   },
+ })
+ async obtenerProgramasEstudio():Promise<object>{
+   try{
+     //const sql =SQLConfig.crearContexto;
+     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+     const sql = SQLConfig.ObtenerProgramasEstudios;
+     const result = await this.genericRepository.dataSource.execute(sql);
+     // FUN_OBTENER_PROGRAMAS_ESTUDIO()  fun_obtener_programas_estudio()
+
+     if(result[0].fun_obtener_programas_estudio.CODIGO !=200){
+       return {
+         "CODIGO": result[0].fun_obtener_programas_estudio.CODIGO,
+         "MENSAJE": result[0].fun_obtener_programas_estudio.MENSAJE,
+         "DATOS": null
+       };
+     }
+     return {
+       "CODIGO": result[0].fun_obtener_programas_estudio.CODIGO,
+       "MENSAJE": result[0].fun_obtener_programas_estudio.MENSAJE,
+       "DATOS": result[0].fun_obtener_programas_estudio.DATOS
+     };
+
+
+   }catch(error){
+     return {
+       "CODIGO": 500,
+       "MENSAJE": "Error POSTGRES",
+       "DATOS": error
+     };
+   }
+ }
+
+
+
+
+
+//METODO GET PARA OBTENER UNA PROGRAMA ESTUDIO POR ID
+
+@get('/ObtenerProgramaEstudio/{id_programa_estudio}')
+@response(200, {
+ description: 'Obtener programa Estudio por id',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async obtenerProgramaEstudioID(
+ @param.path.number('id_programa_estudio') id_programa_estudio: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerProgramaEstudio;
+   const params =[
+    id_programa_estudio
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_PROGRAMA_ESTUDIO() fun_obtener_programa_estudio()
+   if(result[0].fun_obtener_programa_estudio.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_programa_estudio.CODIGO,
+       "MENSAJE": result[0].fun_obtener_programa_estudio.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_programa_estudio.CODIGO,
+     "MENSAJE": result[0].fun_obtener_programa_estudio.MENSAJE,
+     "DATOS": result[0].fun_obtener_programa_estudio.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+
+
+//METODO PARA ACTUALIZAR UNA Programa ESTUDIO POR ID
+
+@post('/ActualizarProgramaEstudio')
+@response(200, {
+  description: 'Actualizar  un Programa Estudio',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelUpdateProgramaEstudio),
+    },
+  },
+})
+async ActualizarProgramaEstudio(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelUpdateProgramaEstudio),
+      },
+    },
+  })
+  data: ModelUpdateProgramaEstudio,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ActualizarProgramaEstudio;
+    const params =[
+      data.id_porgrama_estudio,
+      data.nombre_programa_estudio,
+      data.descripcion_porgrama_estudio,
+      data.tipo_formacion_programa_estudio,
+      data.id_area_estudio
+
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ACTUALIZAR_PROGRAMA_ESTUDIO()  fun_actualizar_programa_estudio()
+    if(result[0].fun_actualizar_programa_estudio.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_actualizar_programa_estudio.CODIGO,
+        "MENSAJE": result[0].fun_actualizar_programa_estudio.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_actualizar_programa_estudio.CODIGO,
+      "MENSAJE": result[0].fun_actualizar_programa_estudio.MENSAJE,
+      "DATOS": result[0].fun_actualizar_programa_estudio.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+
+//METODO PARA ELIMINAR UNA PROGRAMA ESTUDIO POR ID
+
+@post('/EliminarProgramaEstudio')
+@response(200, {
+  description: 'eliminar  una programa Estudio',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(IdEntero),
+    },
+  },
+})
+async EliminarProgramaEstudio(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(IdEntero),
+      },
+    },
+  })
+  id: IdEntero,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.EliminarProgramaEstudio;
+    const params =[
+      id.id
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ELIMINAR_PROGRAMA_ESTUDIO() fun_eliminar_programa_estudio()
+    if(result[0].fun_eliminar_programa_estudio.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_eliminar_programa_estudio.CODIGO,
+        "MENSAJE": result[0].fun_eliminar_programa_estudio.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_eliminar_programa_estudio.CODIGO,
+      "MENSAJE": result[0].fun_eliminar_programa_estudio.MENSAJE,
+      "DATOS": result[0].fun_eliminar_programa_estudio.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //METODO PARA CREAR GRUPO_ESTUDIO
 
 
@@ -762,6 +993,221 @@ async crearGrupoEestudio(
     };
   }
 }
+
+
+
+
+ //METODO GET PARA OBTENER DATOS DE LA TABLA GRUPO ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @get('/ObtenerGruposEstudio')
+ @response(200, {
+   description: 'Obtener grupos de estudio',
+   content:{
+     'application/json':{
+       schema: getModelSchemaRef(GenericModel),
+     },
+   },
+ })
+ async obtenerGruposEstudio():Promise<object>{
+   try{
+     //const sql =SQLConfig.crearContexto;
+     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+     const sql = SQLConfig.ObtenerGruposEstudios;
+     const result = await this.genericRepository.dataSource.execute(sql);
+     // FUN_OBTENER_GRUPOS_ESTUDIO()  fun_obtener_grupos_estudio()
+
+     if(result[0].fun_obtener_grupos_estudio.CODIGO !=200){
+       return {
+         "CODIGO": result[0].fun_obtener_grupos_estudio.CODIGO,
+         "MENSAJE": result[0].fun_obtener_grupos_estudio.MENSAJE,
+         "DATOS": null
+       };
+     }
+     return {
+       "CODIGO": result[0].fun_obtener_grupos_estudio.CODIGO,
+       "MENSAJE": result[0].fun_obtener_grupos_estudio.MENSAJE,
+       "DATOS": result[0].fun_obtener_grupos_estudio.DATOS
+     };
+
+
+   }catch(error){
+     return {
+       "CODIGO": 500,
+       "MENSAJE": "Error POSTGRES",
+       "DATOS": error
+     };
+   }
+ }
+
+
+
+
+
+//METODO GET PARA OBTENER UNA GRUPO ESTUDIO POR ID
+
+@get('/ObtenerGrupoEstudio/{id_grupo_estudio}')
+@response(200, {
+ description: 'Obtener Grupo Estudio por id',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async obtenerGrupoEstudioID(
+ @param.path.number('id_grupo_estudio') id_grupo_estudio: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerGrupoEstudio;
+   const params =[
+    id_grupo_estudio
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_GRUPO_ESTUDIO() fun_obtener_grupo_estudio()
+   if(result[0].fun_obtener_grupo_estudio.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_grupo_estudio.CODIGO,
+       "MENSAJE": result[0].fun_obtener_grupo_estudio.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_grupo_estudio.CODIGO,
+     "MENSAJE": result[0].fun_obtener_grupo_estudio.MENSAJE,
+     "DATOS": result[0].fun_obtener_grupo_estudio.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+//METODO PARA ACTUALIZAR UNA GRUPO ESTUDIO POR ID
+
+@post('/ActualizarGrupoEstudio')
+@response(200, {
+  description: 'Actualizar  un Grupo Estudio',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelUpdateGrupoEstudio),
+    },
+  },
+})
+async ActualizarGrupoEstudio(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelUpdateGrupoEstudio),
+      },
+    },
+  })
+  data: ModelUpdateGrupoEstudio,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ActualizarGrupoEstudio;
+    const params =[
+      data.id_grupo_estudio,
+      data.nombre_grupo_estudio,
+      data.descripcion_grupo_estudio,
+      data.jornada_grupo_estudio,
+      data.id_programa_estudio
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ACTUALIZAR_GRUPO_ESTUDIO()  fun_actualizar_grupo_estudio()
+    if(result[0].fun_actualizar_grupo_estudio.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_actualizar_grupo_estudio.CODIGO,
+        "MENSAJE": result[0].fun_actualizar_grupo_estudio.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_actualizar_grupo_estudio.CODIGO,
+      "MENSAJE": result[0].fun_actualizar_grupo_estudio.MENSAJE,
+      "DATOS": result[0].fun_actualizar_grupo_estudio.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+//METODO PARA ELIMINAR UNA GRUPO ESTUDIO POR ID
+
+@post('/EliminarGrupoEstudio')
+@response(200, {
+  description: 'eliminar  un grupo Estudio',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(IdEntero),
+    },
+  },
+})
+async EliminarGrupoEstudio(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(IdEntero),
+      },
+    },
+  })
+  id: IdEntero,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.EliminarGrupoEstudio;
+    const params =[
+      id.id
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ELIMINAR_GRUPO_ESTUDIO() fun_eliminar_grupo_estudio()
+    if(result[0].fun_eliminar_grupo_estudio.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_eliminar_grupo_estudio.CODIGO,
+        "MENSAJE": result[0].fun_eliminar_grupo_estudio.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_eliminar_grupo_estudio.CODIGO,
+      "MENSAJE": result[0].fun_eliminar_grupo_estudio.MENSAJE,
+      "DATOS": result[0].fun_eliminar_grupo_estudio.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
 
 
 //METODO PARA CREAR Estudiante

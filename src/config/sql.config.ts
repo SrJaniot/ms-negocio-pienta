@@ -38,6 +38,14 @@ export namespace SQLConfig {
   export const ActualizarAreaEstudio: string = "SELECT FUN_ACTUALIZAR_AREA_ESTUDIO($1,$2,$3,$4);";
   export const ObtenerAreaEstudio: string = "SELECT FUN_OBTENER_AREA_ESTUDIO($1);";
   export const EliminarAreaEstudio: string = "SELECT FUN_ELIMINAR_AREA_ESTUDIO($1);";
+  export const ObtenerProgramasEstudios: string = "SELECT FUN_OBTENER_PROGRAMAS_ESTUDIO();";
+  export const ObtenerProgramaEstudio: string = "SELECT FUN_OBTENER_PROGRAMA_ESTUDIO($1);";
+  export const ActualizarProgramaEstudio: string = "SELECT FUN_ACTUALIZAR_PROGRAMA_ESTUDIO($1,$2,$3,$4,$5);";
+  export const EliminarProgramaEstudio: string = "SELECT FUN_ELIMINAR_PROGRAMA_ESTUDIO($1);";
+  export const ObtenerGruposEstudios: string = "SELECT FUN_OBTENER_GRUPOS_ESTUDIO();";
+  export const ObtenerGrupoEstudio: string = "SELECT FUN_OBTENER_GRUPO_ESTUDIO($1);";
+  export const ActualizarGrupoEstudio: string = "SELECT FUN_ACTUALIZAR_GRUPO_ESTUDIO($1,$2,$3,$4,$5);";
+  export const EliminarGrupoEstudio: string = "SELECT FUN_ELIMINAR_GRUPO_ESTUDIO($1);";
 
 
   //FUNCIONES PARA EL CONTROLADOR AREASTEMAS ---------------------------------------------------------------------------------------------------------
