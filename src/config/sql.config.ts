@@ -46,6 +46,10 @@ export namespace SQLConfig {
   export const ObtenerGrupoEstudio: string = "SELECT FUN_OBTENER_GRUPO_ESTUDIO($1);";
   export const ActualizarGrupoEstudio: string = "SELECT FUN_ACTUALIZAR_GRUPO_ESTUDIO($1,$2,$3,$4,$5);";
   export const EliminarGrupoEstudio: string = "SELECT FUN_ELIMINAR_GRUPO_ESTUDIO($1);";
+  export const ObtenerEstudiantes: string = "SELECT FUN_OBTENER_ESTUDIANTES();";
+  export const ObtenerEstudiante: string = "SELECT FUN_OBTENER_ESTUDIANTE($1);";
+  export const ActualizarEstudiante: string = "SELECT FUN_ACTUALIZAR_ESTUDIANTE($1,$2,$3,$4,$5,$6,$7);";
+
 
 
   //FUNCIONES PARA EL CONTROLADOR AREASTEMAS ---------------------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,   IdEntero,   ModelInsertAreaEstudio,   ModelInsertEstudiante,   ModelInsertGrupoEstudio,   ModelInsertInstitucion, ModelInsertProgramaEstudio, ModelUpdateAreaEstudio, ModelUpdateGrupoEstudio, ModelUpdateProgramaEstudio, ModelUpdateSede, MoselInsertSede,  } from '../models';
+import {GenericModel,   IdEntero,   ModelInsertAreaEstudio,   ModelInsertEstudiante,   ModelInsertGrupoEstudio,   ModelInsertInstitucion, ModelInsertProgramaEstudio, ModelUpdateAreaEstudio, ModelUpdateEstudiante, ModelUpdateGrupoEstudio, ModelUpdateProgramaEstudio, ModelUpdateSede, MoselInsertSede,  } from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -1272,6 +1272,184 @@ async crearEstudiante(
     };
   }
 }
+
+
+
+
+
+ //METODO GET PARA OBTENER DATOS DE LA TABLA ESTUDIANTE ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @get('/ObtenerEstudiantes')
+ @response(200, {
+   description: 'Obtener estudiantes',
+   content:{
+     'application/json':{
+       schema: getModelSchemaRef(GenericModel),
+     },
+   },
+ })
+ async obtenerEstudiantes():Promise<object>{
+   try{
+     //const sql =SQLConfig.crearContexto;
+     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+     const sql = SQLConfig.ObtenerEstudiantes;
+     const result = await this.genericRepository.dataSource.execute(sql);
+     // FUN_OBTENER_ESTUDIANTES()  fun_obtener_estudiantes()
+
+     if(result[0].fun_obtener_estudiantes.CODIGO !=200){
+       return {
+         "CODIGO": result[0].fun_obtener_estudiantes.CODIGO,
+         "MENSAJE": result[0].fun_obtener_estudiantes.MENSAJE,
+         "DATOS": null
+       };
+     }
+     return {
+       "CODIGO": result[0].fun_obtener_estudiantes.CODIGO,
+       "MENSAJE": result[0].fun_obtener_estudiantes.MENSAJE,
+       "DATOS": result[0].fun_obtener_estudiantes.DATOS
+     };
+
+
+   }catch(error){
+     return {
+       "CODIGO": 500,
+       "MENSAJE": "Error POSTGRES",
+       "DATOS": error
+     };
+   }
+ }
+
+
+
+
+//METODO GET PARA OBTENER UN ESTUDIANTE POR ID
+
+@get('/ObtenerEstudiante/{id_estudiante}')
+@response(200, {
+ description: 'Obtener Estudiante por id',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async obtenerEstudianteID(
+ @param.path.number('id_estudiante') id_estudiante: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerEstudiante;
+   const params =[
+    id_estudiante
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_ESTUDIANTE() fun_obtener_estudiante()
+   if(result[0].fun_obtener_estudiante.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_estudiante.CODIGO,
+       "MENSAJE": result[0].fun_obtener_estudiante.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_estudiante.CODIGO,
+     "MENSAJE": result[0].fun_obtener_estudiante.MENSAJE,
+     "DATOS": result[0].fun_obtener_estudiante.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+//METODO PARA ACTUALIZAR UN ESTUDIANTE POR ID
+
+@post('/ActualizarEstudiante')
+@response(200, {
+  description: 'Actualizar  un Estudiante',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelUpdateEstudiante),
+    },
+  },
+})
+async ActualizarEstudiante(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelUpdateEstudiante),
+      },
+    },
+  })
+  data: ModelUpdateEstudiante,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ActualizarEstudiante;
+    const params =[
+      data.num_documento,
+      data.nombre,
+      data.direccion,
+      data.telefono,
+      data.correo,
+      data.id_grupo_estudio,
+      data.tipo_documento
+
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ACTUALIZAR_ESTUDIANTE()  fun_actualizar_estudiante()
+    if(result[0].fun_actualizar_estudiante.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_actualizar_estudiante.CODIGO,
+        "MENSAJE": result[0].fun_actualizar_estudiante.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_actualizar_estudiante.CODIGO,
+      "MENSAJE": result[0].fun_actualizar_estudiante.MENSAJE,
+      "DATOS": result[0].fun_actualizar_estudiante.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //METODO GET PARA OBTENER TODAS LAS INSTITUCIONES
