@@ -18,3 +18,4 @@ export * from './model-update-area-estudio.model';
 export * from './model-update-programa-estudio.model';
 export * from './model-update-grupo-estudio.model';
 export * from './model-update-estudiante.model';
+export * from './model-insert-tutor.model';

@@ -49,6 +49,10 @@ export namespace SQLConfig {
   export const ObtenerEstudiantes: string = "SELECT FUN_OBTENER_ESTUDIANTES();";
   export const ObtenerEstudiante: string = "SELECT FUN_OBTENER_ESTUDIANTE($1);";
   export const ActualizarEstudiante: string = "SELECT FUN_ACTUALIZAR_ESTUDIANTE($1,$2,$3,$4,$5,$6,$7);";
+  export const CrearTutor: string = "SELECT FUN_INSERTAR_TUTOR_JSON($1,$2,$3,$4,$5,$6,$7);";
+  export const ObtenerTutores: string = "SELECT FUN_OBTENER_TUTORES();";
+  export const ObtenerTutor: string = "SELECT FUN_OBTENER_TUTOR($1);";
+  export const ActualizarTutor: string = "SELECT FUN_ACTUALIZAR_TUTOR($1,$2,$3,$4,$5,$6,$7);";
 
 
 

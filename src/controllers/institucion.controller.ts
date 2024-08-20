@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,   IdEntero,   ModelInsertAreaEstudio,   ModelInsertEstudiante,   ModelInsertGrupoEstudio,   ModelInsertInstitucion, ModelInsertProgramaEstudio, ModelUpdateAreaEstudio, ModelUpdateEstudiante, ModelUpdateGrupoEstudio, ModelUpdateProgramaEstudio, ModelUpdateSede, MoselInsertSede,  } from '../models';
+import {GenericModel,   IdEntero,   ModelInsertAreaEstudio,   ModelInsertEstudiante,   ModelInsertGrupoEstudio,   ModelInsertInstitucion, ModelInsertProgramaEstudio, ModelInsertTutor, ModelUpdateAreaEstudio, ModelUpdateEstudiante, ModelUpdateGrupoEstudio, ModelUpdateProgramaEstudio, ModelUpdateSede, MoselInsertSede,  } from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -1496,9 +1496,238 @@ async ActualizarEstudiante(
 
 
 
+ //METODO PARA CREAR Estudiante
+
+@post('/CrearTutor')
+@response(200, {
+  description: 'creacion de un tutor',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelInsertTutor),
+    },
+  },
+})
+async crearTutor(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelInsertTutor),
+      },
+    },
+  })
+  data: ModelInsertTutor,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.CrearTutor;
+    const params =[
+      data.Nombre,
+      data.Apellido,
+      data.direccion,
+      data.telefono,
+      data.correo,
+      data.id_area_evaluar,
+      data.id_tutor,
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_INSERTAR_INSTITUCION_JSON fun_insertar_institucion_json
+    // FUN_INSERTAR_TUTOR_JSON    fun_insertar_tutor_json
+
+    if(result[0].fun_insertar_tutor_json.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_insertar_tutor_json.CODIGO,
+        "MENSAJE": result[0].fun_insertar_tutor_json.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_insertar_tutor_json.CODIGO,
+      "MENSAJE": result[0].fun_insertar_tutor_json.MENSAJE,
+      "DATOS": result[0].fun_insertar_tutor_json.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "Error al insertar datos  del TORNEO en la funcion de postgres ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+
+
+ //METODO GET PARA OBTENER DATOS DE LA TABLA ESTUDIANTE ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @get('/ObtenerTutores')
+ @response(200, {
+   description: 'Obtener Tutores',
+   content:{
+     'application/json':{
+       schema: getModelSchemaRef(GenericModel),
+     },
+   },
+ })
+ async obtenerTutores():Promise<object>{
+   try{
+     //const sql =SQLConfig.crearContexto;
+     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+     const sql = SQLConfig.ObtenerTutores;
+     const result = await this.genericRepository.dataSource.execute(sql);
+     // FUN_OBTENER_TUTORES() fun_obtener_tutores()
+
+     if(result[0].fun_obtener_tutores.CODIGO !=200){
+       return {
+         "CODIGO": result[0].fun_obtener_tutores.CODIGO,
+         "MENSAJE": result[0].fun_obtener_tutores.MENSAJE,
+         "DATOS": null
+       };
+     }
+     return {
+       "CODIGO": result[0].fun_obtener_tutores.CODIGO,
+       "MENSAJE": result[0].fun_obtener_tutores.MENSAJE,
+       "DATOS": result[0].fun_obtener_tutores.DATOS
+     };
+
+
+   }catch(error){
+     return {
+       "CODIGO": 500,
+       "MENSAJE": "Error POSTGRES",
+       "DATOS": error
+     };
+   }
+ }
+
+
+
+
+//METODO GET PARA OBTENER UN Turtor POR ID
+
+@get('/ObtenerTutor/{id_tutor}')
+@response(200, {
+ description: 'Obtener tutor por id',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async obtenerTutorID(
+ @param.path.number('id_tutor') id_tutor: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerTutor;
+   const params =[
+    id_tutor
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_TUTOR() fun_obtener_tutor()
+   if(result[0].fun_obtener_tutor.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_tutor.CODIGO,
+       "MENSAJE": result[0].fun_obtener_tutor.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_tutor.CODIGO,
+     "MENSAJE": result[0].fun_obtener_tutor.MENSAJE,
+     "DATOS": result[0].fun_obtener_tutor.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+//METODO PARA ACTUALIZAR UN ESTUDIANTE POR ID
+
+@post('/ActualizarTutor')
+@response(200, {
+  description: 'Actualizar  un Estudiante',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelInsertTutor),
+    },
+  },
+})
+async ActualizarTutor(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelInsertTutor),
+      },
+    },
+  })
+  data: ModelInsertTutor,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ActualizarTutor;
+    const params =[
+      data.id_tutor,
+      data.Nombre,
+      data.Apellido,
+      data.direccion,
+      data.telefono,
+      data.correo,
+      data.id_area_evaluar
+
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_ACTUALIZAR_TUTOR()  fun_actualizar_tutor()
+    if(result[0].fun_actualizar_tutor.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_actualizar_tutor.CODIGO,
+        "MENSAJE": result[0].fun_actualizar_tutor.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_actualizar_tutor.CODIGO,
+      "MENSAJE": result[0].fun_actualizar_tutor.MENSAJE,
+      "DATOS": result[0].fun_actualizar_tutor.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+
+
+
+
 
 
 
 
 
 }
+
