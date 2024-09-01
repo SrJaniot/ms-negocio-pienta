@@ -19,3 +19,7 @@ export * from './model-update-programa-estudio.model';
 export * from './model-update-grupo-estudio.model';
 export * from './model-update-estudiante.model';
 export * from './model-insert-tutor.model';
+export * from './model-insert-prueba-generica.model';
+export * from './model-insert-prueba-generica-tyt.model';
+export * from './model-matricular-grupo-prueba.model';
+export * from './model-matricular-estudiante-prueba.model';

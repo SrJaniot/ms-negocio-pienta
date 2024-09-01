@@ -60,4 +60,14 @@ export namespace SQLConfig {
   export const ObtenerAreasEvaluar: string = "SELECT FUN_CONSULTAR_AREAS_EVALUAR();";
   export const ObtenerTemasEvaluar: string = "SELECT FUN_CONSULTAR_TEMAS_AREAS($1);";
 
+
+
+  //FUNCIONES PARA EL CONTROLADOR DE PRUEBA ---------------------------------------------------------------------------------------------------------
+  export const CrearPruebaGenerica: string = "SELECT FUN_INSERTAR_PRUEBA_GENERICA_JSON($1,$2,$3,$4,$5,$6,$7,$8);";
+  export const CrearPruebaGenericaTYT: string = "SELECT FUN_INSERTAR_PRUEBA_GENERICA_TYT_JSON($1,$2,$3,$4,$5,$6);";
+  export const ObtenerPruebaID: string = "SELECT FUN_OBTENER_PRUEBA_JSON($1);";
+  export const ObtenerPruebas: string = "SELECT FUN_OBTENER_PRUEBAS_JSON();";
+  export const MatricularGrupoPrueba: string = "SELECT FUN_VINCULAR_ESTUDIANTES_A_PRUEBA($1,$2);";
+  export const MatricularEstudiantePrueba: string = "SELECT FUN_VINCULAR_ESTUDIANTE_A_PRUEBA($1,$2);";
+  export const ObtenerPreviewPrueba: string = "SELECT FUN_OBTENER_PRUEBA_DATOS_PREVIEW_JSON($1);";
 }
