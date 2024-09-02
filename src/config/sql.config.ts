@@ -71,4 +71,5 @@ export namespace SQLConfig {
   export const MatricularEstudiantePrueba: string = "SELECT FUN_VINCULAR_ESTUDIANTE_A_PRUEBA($1,$2);";
   export const ObtenerPreviewPrueba: string = "SELECT FUN_OBTENER_PRUEBA_DATOS_PREVIEW_JSON($1);";
   export const ObtenerPreguntasPrueba: string = "SELECT FUN_OBTENER_ID_PREGUNTAS_PRUEBA_JSON($1);";
+  export const ObtenerPruebaDisponibleID: string = "SELECT FUN_OBTENER_PRUEBAS_ACTIVAS_ESTUDIANTE_JSON($1);";
 }

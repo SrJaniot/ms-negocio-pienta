@@ -474,6 +474,60 @@ async ObtenerPreguntasPrueba(
 
 
 
+//METODO GET PARA OBTENER UNA prueba disponible POR ID
+
+@get('/ObtenerPruebaDisponible/{id_prueba}')
+@response(200, {
+ description: 'Obtener prueba disponible por id',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async obtenerProgramaEstudioID(
+ @param.path.number('id_prueba') id_prueba: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerPruebaDisponibleID;
+   const params =[
+    id_prueba
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_PRUEBAS_ACTIVAS_ESTUDIANTE_JSON  fun_obtener_pruebas_activas_estudiante_json
+   if(result[0].fun_obtener_pruebas_activas_estudiante_json.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_pruebas_activas_estudiante_json.CODIGO,
+       "MENSAJE": result[0].fun_obtener_pruebas_activas_estudiante_json.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_pruebas_activas_estudiante_json.CODIGO,
+     "MENSAJE": result[0].fun_obtener_pruebas_activas_estudiante_json.MENSAJE,
+     "DATOS": result[0].fun_obtener_pruebas_activas_estudiante_json.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+
+
+
+
+
 
 
 
