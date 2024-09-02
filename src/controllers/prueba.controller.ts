@@ -417,6 +417,66 @@ async ObtenerPreviewPrueba(
 
 
 
+//METODO PARA TRAER EL PREVIEW DE LA PRUEBA
+
+@post('/ObtenerPreguntasPrueba')
+@response(200, {
+  description: 'Obtener Preguntas de la prueba',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(IdEntero),
+    },
+  },
+})
+async ObtenerPreguntasPrueba(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(IdEntero),
+      },
+    },
+  })
+  id: IdEntero,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    const sql = SQLConfig.ObtenerPreguntasPrueba;
+    const params =[
+      id.id
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_OBTENER_ID_PREGUNTAS_PRUEBA_JSON() fun_obtener_id_preguntas_prueba_json
+    if(result[0].fun_obtener_id_preguntas_prueba_json.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_obtener_id_preguntas_prueba_json.CODIGO,
+        "MENSAJE": result[0].fun_obtener_id_preguntas_prueba_json.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_obtener_id_preguntas_prueba_json.CODIGO,
+      "MENSAJE": result[0].fun_obtener_id_preguntas_prueba_json.MENSAJE,
+      "DATOS": result[0].fun_obtener_id_preguntas_prueba_json.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+
+
+
 
 
 
