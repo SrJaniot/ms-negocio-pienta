@@ -46,13 +46,19 @@ async crearPruebaGenerica(
   try{
     //const sql =SQLConfig.crearContexto;
     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    let fecha_inicio = new Date(data.fecha_prueba_inicio);
+    let fecha_fin = new Date(data.fecha_prueba_fin);
+    fecha_inicio.setHours(fecha_inicio.getHours()-5);
+    fecha_fin.setHours(fecha_fin.getHours()-5);
+
+
     const sql = SQLConfig.CrearPruebaGenerica;
     const params =[
       data.nombre_prueba,
       data.descripcion_prueba,
       data.tipo_prueba,
-      data.fecha_prueba_inicio,
-      data.fecha_prueba_fin,
+      fecha_inicio,
+      fecha_fin,
       data.tiempo_prueba,
       data.numero_preguntas_prueba,
       data.id_area_evaluar
@@ -107,15 +113,25 @@ async crearPruebaGenericaTYT(
   try{
     //const sql =SQLConfig.crearContexto;
     // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    //convertir la fecha inicio y fin en fecha de bogota colombia
+    let fecha_inicio = new Date(data.fecha_prueba_inicio);
+    let fecha_fin = new Date(data.fecha_prueba_fin);
+    fecha_inicio.setHours(fecha_inicio.getHours()-5);
+    fecha_fin.setHours(fecha_fin.getHours()-5);
+
+
     const sql = SQLConfig.CrearPruebaGenericaTYT;
     const params =[
       data.nombre_prueba,
       data.descripcion_prueba,
       data.tipo_prueba,
-      data.fecha_prueba_inicio,
-      data.fecha_prueba_fin,
+      fecha_inicio,
+      fecha_fin,
       data.tiempo_prueba,
     ];
+    console.log(params);
+
+
     const result = await this.genericRepository.dataSource.execute(sql, params);
     //console.log(result[0]);
     //console.log(result[0]);
