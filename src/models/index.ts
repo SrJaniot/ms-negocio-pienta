@@ -23,3 +23,4 @@ export * from './model-insert-prueba-generica.model';
 export * from './model-insert-prueba-generica-tyt.model';
 export * from './model-matricular-grupo-prueba.model';
 export * from './model-matricular-estudiante-prueba.model';
+export * from './model-insert-prueba-custom.model';

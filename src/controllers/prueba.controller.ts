@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,   IdEntero, ModelInsertPruebaGenerica, ModelInsertPruebaGenericaTyt, ModelMatricularEstudiantePrueba, ModelMatricularGrupoPrueba} from '../models';
+import {GenericModel,   IdEntero, ModelInsertPruebaCustom, ModelInsertPruebaGenerica, ModelInsertPruebaGenericaTyt, ModelMatricularEstudiantePrueba, ModelMatricularGrupoPrueba} from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -535,6 +535,78 @@ async obtenerProgramaEstudioID(
      "DATOS": error
    };
  }
+}
+
+
+//METODO POST PARA CREAR UNA PRUEBA Custom
+@post('/CrearPruebaCustom')
+@response(200, {
+  description: 'creacion de un Prueba Custom',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelInsertPruebaCustom),
+    },
+  },
+})
+async crearPruebaCustom(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelInsertPruebaCustom),
+      },
+    },
+  })
+  data: ModelInsertPruebaCustom,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+    let fecha_inicio = new Date(data.fecha_inicio_prueba);
+    let fecha_fin = new Date(data.fecha_fin_prueba);
+    fecha_inicio.setHours(fecha_inicio.getHours()-5);
+    fecha_fin.setHours(fecha_fin.getHours()-5);
+
+
+    //Comvertir data.preguntas en un json
+
+
+    const sql = SQLConfig.CrearPruebaCustom;
+    const params =[
+      data.nombre_prueba,
+      data.descripcion_prueba,
+      data.tipo_prueba,
+      fecha_inicio,
+      fecha_fin,
+      data.duracion_prueba,
+      data.preguntas_id,
+    ];
+
+
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_INSERTAR_PRUEBA_CUSTOMIZADA_JSON   fun_insertar_prueba_customizada_json
+    if(result[0].fun_insertar_prueba_customizada_json.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_insertar_prueba_customizada_json.CODIGO,
+        "MENSAJE": result[0].fun_insertar_prueba_customizada_json.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_insertar_prueba_customizada_json.CODIGO,
+      "MENSAJE": result[0].fun_insertar_prueba_customizada_json.MENSAJE,
+      "DATOS": result[0].fun_insertar_prueba_customizada_json.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "Error al insertar datos  del TORNEO en la funcion de postgres ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
 }
 
 
