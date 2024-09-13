@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,   IdEntero, ModelInsertPruebaCustom, ModelInsertPruebaGenerica, ModelInsertPruebaGenericaTyt, ModelMatricularEstudiantePrueba, ModelMatricularGrupoPrueba} from '../models';
+import {GenericModel,   IdEntero, ModelInsertFechaInicioPruebaEstudiante, ModelInsertPruebaCustom, ModelInsertPruebaGenerica, ModelInsertPruebaGenericaTyt, ModelMatricularEstudiantePrueba, ModelMatricularGrupoPrueba} from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -492,9 +492,9 @@ async ObtenerPreguntasPrueba(
 
 //METODO GET PARA OBTENER UNA prueba disponible POR ID
 
-@get('/ObtenerPruebaDisponible/{id_prueba}')
+@get('/ObtenerPruebaDisponible/{id_estudiante}')
 @response(200, {
- description: 'Obtener prueba disponible por id',
+ description: 'Obtener prueba disponible por id ESTUDIANTE',
  content:{
    'application/json':{
      schema: getModelSchemaRef(GenericModel),
@@ -502,14 +502,14 @@ async ObtenerPreguntasPrueba(
  },
 })
 async obtenerProgramaEstudioID(
- @param.path.number('id_prueba') id_prueba: number,
+ @param.path.number('id_estudiante') id_estudiante: number,
 ):Promise<object>{
  try{
    //const sql =SQLConfig.crearContexto;
    // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
    const sql = SQLConfig.ObtenerPruebaDisponibleID;
    const params =[
-    id_prueba
+    id_estudiante
    ];
    //console.log(sql);
    //console.log(params);
@@ -527,6 +527,54 @@ async obtenerProgramaEstudioID(
      "CODIGO": result[0].fun_obtener_pruebas_activas_estudiante_json.CODIGO,
      "MENSAJE": result[0].fun_obtener_pruebas_activas_estudiante_json.MENSAJE,
      "DATOS": result[0].fun_obtener_pruebas_activas_estudiante_json.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+//METODO GET PARA OBTENER UNA prueba disponible POR ID
+
+@get('/ObtenerPruebaEnCurso/{id_estudiante}')
+@response(200, {
+ description: 'Obtener prueba disponible por id ESTUDIANTE',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async ObtenerPruebaEnCurso(
+ @param.path.number('id_estudiante') id_estudiante: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerPruebaEnCursoID;
+   const params =[
+    id_estudiante
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_PRUEBAS_EN_CURSO_ESTUDIANTE_JSON  fun_obtener_pruebas_en_curso_estudiante_json
+   if(result[0].fun_obtener_pruebas_en_curso_estudiante_json.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_pruebas_en_curso_estudiante_json.CODIGO,
+       "MENSAJE": result[0].fun_obtener_pruebas_en_curso_estudiante_json.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_pruebas_en_curso_estudiante_json.CODIGO,
+     "MENSAJE": result[0].fun_obtener_pruebas_en_curso_estudiante_json.MENSAJE,
+     "DATOS": result[0].fun_obtener_pruebas_en_curso_estudiante_json.DATOS
    };
  }catch(error){
    return {
@@ -599,6 +647,84 @@ async crearPruebaCustom(
       "CODIGO": result[0].fun_insertar_prueba_customizada_json.CODIGO,
       "MENSAJE": result[0].fun_insertar_prueba_customizada_json.MENSAJE,
       "DATOS": result[0].fun_insertar_prueba_customizada_json.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "Error al insertar datos  del TORNEO en la funcion de postgres ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
+
+
+//METODO POST PARA REGISTRAR LA FECHA DE INICIO DE UNA PRUEBA DE UN ESTUDIANTE
+@post('/RegistrarFechaInicioPrueba')
+@response(200, {
+  description: 'Registrar la fecha de inicio de una prueba de un estudiante',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelInsertFechaInicioPruebaEstudiante),
+    },
+  },
+})
+async RegistrarFechaInicioPrueba(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelInsertFechaInicioPruebaEstudiante),
+      },
+    },
+  })
+  data: ModelInsertFechaInicioPruebaEstudiante,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+
+    const sql = SQLConfig.RegistrarFechaInicioPrueba;
+    const params =[
+      data.id_prueba,
+      data.id_estudiante
+    ];
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_REGISTRAR_FECHA_INICIO_PRUEBA_ESTUDIANTE   fun_registrar_fecha_inicio_prueba_estudiante
+    if(result[0].fun_registrar_fecha_inicio_prueba_estudiante.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_registrar_fecha_inicio_prueba_estudiante.CODIGO,
+        "MENSAJE": result[0].fun_registrar_fecha_inicio_prueba_estudiante.MENSAJE,
+        "DATOS": null
+      };
+    }
+    if (result[0].fun_registrar_fecha_inicio_prueba_estudiante.CODIGO ==200){
+      // CUANDO LA RESPUESTA SEA CORRECTA SE GENERARA UNA CUENTA REGRESIVA PARA LLAMAR OTRA FUNCION
+      const minutos = data.Duracion_minutos_Prueba; // Asegúrate de que `minutos` esté en `data`
+      const milisegundos = minutos * 60 * 1000;
+      // Define la función que se ejecutará después del tiempo de espera
+      const finalizarPrueba = async () => {
+        const sqlFinalizar = SQLConfig.RegistrarFechaFinalizarPrueba;
+        const paramsFinalizar = [
+          data.id_prueba,
+          data.id_estudiante
+        ];
+        try {
+          const resultFinalizar = await this.genericRepository.dataSource.execute(sqlFinalizar, paramsFinalizar);
+          console.log('Prueba finalizada:', resultFinalizar);
+        } catch (error) {
+          console.error('Error al finalizar la prueba:', error);
+        }
+      };
+      // Usa setTimeout para programar la ejecución de la función
+      setTimeout(finalizarPrueba, milisegundos);
+    }
+    return {
+      "CODIGO": result[0].fun_registrar_fecha_inicio_prueba_estudiante.CODIGO,
+      "MENSAJE": result[0].fun_registrar_fecha_inicio_prueba_estudiante.MENSAJE,
+      "DATOS": result[0].fun_registrar_fecha_inicio_prueba_estudiante.DATOS
     };
   }catch(error){
     return {

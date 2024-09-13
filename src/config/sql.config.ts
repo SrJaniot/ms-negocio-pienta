@@ -73,4 +73,7 @@ export namespace SQLConfig {
   export const ObtenerPreguntasPrueba: string = "SELECT FUN_OBTENER_ID_PREGUNTAS_PRUEBA_JSON($1);";
   export const ObtenerPruebaDisponibleID: string = "SELECT FUN_OBTENER_PRUEBAS_ACTIVAS_ESTUDIANTE_JSON($1);";
   export const CrearPruebaCustom: string = "SELECT FUN_INSERTAR_PRUEBA_CUSTOMIZADA_JSON($1,$2,$3,$4,$5,$6,$7);";
+  export const RegistrarFechaInicioPrueba: string = "SELECT FUN_REGISTRAR_FECHA_INICIO_PRUEBA_ESTUDIANTE($1,$2);";
+  export const RegistrarFechaFinalizarPrueba: string = "SELECT FUN_REGISTRAR_FECHA_FIN_PRUEBA_ESTUDIANTE($1,$2);";
+  export const ObtenerPruebaEnCursoID: string = "SELECT FUN_OBTENER_PRUEBAS_EN_CURSO_ESTUDIANTE_JSON($1);";
 }
