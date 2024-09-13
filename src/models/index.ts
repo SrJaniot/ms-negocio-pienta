@@ -25,3 +25,4 @@ export * from './model-matricular-grupo-prueba.model';
 export * from './model-matricular-estudiante-prueba.model';
 export * from './model-insert-prueba-custom.model';
 export * from './model-insert-fecha-inicio-prueba-estudiante.model';
+export * from './model-insertar-respuestas-preguntas-estudiante-prueba.model';

@@ -1,7 +1,7 @@
 // Uncomment these imports to begin using these cool features!
 
 import {DefaultCrudRepository, juggler, Model} from '@loopback/repository';
-import {GenericModel,   IdEntero, ModelInsertFechaInicioPruebaEstudiante, ModelInsertPruebaCustom, ModelInsertPruebaGenerica, ModelInsertPruebaGenericaTyt, ModelMatricularEstudiantePrueba, ModelMatricularGrupoPrueba} from '../models';
+import {GenericModel,   IdEntero, ModelInsertarRespuestasPreguntasEstudiantePrueba, ModelInsertFechaInicioPruebaEstudiante, ModelInsertPruebaCustom, ModelInsertPruebaGenerica, ModelInsertPruebaGenericaTyt, ModelMatricularEstudiantePrueba, ModelMatricularGrupoPrueba} from '../models';
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
@@ -586,6 +586,106 @@ async ObtenerPruebaEnCurso(
 }
 
 
+
+//METODO GET PARA OBTENER UNA prueba disponible POR ID
+
+@get('/ObtenerPruebaFinalizadas/{id_estudiante}')
+@response(200, {
+ description: 'Obtener prueba finalizadas por id ESTUDIANTE',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async ObtenerFinalizadas(
+ @param.path.number('id_estudiante') id_estudiante: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerFinalizadasID;
+   const params =[
+    id_estudiante
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_OBTENER_FINALIZADAS_ESTUDIANTE_JSON  fun_obtener_finalizadas_estudiante_json
+   if(result[0].fun_obtener_finalizadas_estudiante_json.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_obtener_finalizadas_estudiante_json.CODIGO,
+       "MENSAJE": result[0].fun_obtener_finalizadas_estudiante_json.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_obtener_finalizadas_estudiante_json.CODIGO,
+     "MENSAJE": result[0].fun_obtener_finalizadas_estudiante_json.MENSAJE,
+     "DATOS": result[0].fun_obtener_finalizadas_estudiante_json.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
+
+//METODO GET PARA OBTENER UNA prueba disponible POR ID
+
+@get('/ObtenerFechaInicioFinDuracionPrueba/{id_prueba}/{id_estudiante}')
+@response(200, {
+ description: 'Obtener prueba finalizadas por id ESTUDIANTE',
+ content:{
+   'application/json':{
+     schema: getModelSchemaRef(GenericModel),
+   },
+ },
+})
+async ObtenerFechaInicioFinDuracionPrueba(
+ @param.path.number('id_prueba') id_prueba: number,
+ @param.path.number('id_estudiante') id_estudiante: number,
+):Promise<object>{
+ try{
+   //const sql =SQLConfig.crearContexto;
+   // EN ESTE CASO ESTA FUNCION RETORNA UN JSON DESDE POSTGRES
+   const sql = SQLConfig.ObtenerFechaInicioFinDuracionPrueba;
+   const params =[
+    id_prueba,
+    id_estudiante
+   ];
+   //console.log(sql);
+   //console.log(params);
+   const result = await this.genericRepository.dataSource.execute(sql, params);
+   //console.log(result[0]);
+   //FUN_CAPTURAR_FECHA_INICIO_PRUEBA_ESTUDIANTE  fun_capturar_fecha_inicio_prueba_estudiante
+   if(result[0].fun_capturar_fecha_inicio_prueba_estudiante.CODIGO !=200){
+     return {
+       "CODIGO": result[0].fun_capturar_fecha_inicio_prueba_estudiante.CODIGO,
+       "MENSAJE": result[0].fun_capturar_fecha_inicio_prueba_estudiante.MENSAJE,
+       "DATOS": null
+     };
+   }
+   return {
+     "CODIGO": result[0].fun_capturar_fecha_inicio_prueba_estudiante.CODIGO,
+     "MENSAJE": result[0].fun_capturar_fecha_inicio_prueba_estudiante.MENSAJE,
+     "DATOS": result[0].fun_capturar_fecha_inicio_prueba_estudiante.DATOS
+   };
+ }catch(error){
+   return {
+     "CODIGO": 500,
+     "MENSAJE": "Error POSTGRES",
+     "DATOS": error
+   };
+ }
+}
+
+
 //METODO POST PARA CREAR UNA PRUEBA Custom
 @post('/CrearPruebaCustom')
 @response(200, {
@@ -734,6 +834,69 @@ async RegistrarFechaInicioPrueba(
     };
   }
 }
+
+
+
+
+//METODO POST PARA CREAR UNA PRUEBA Custom
+@post('/RegistrarRespuestasPreguntasPruebaEstudiante')
+@response(200, {
+  description: 'Registrar las respuestas de las preguntas de una prueba de un estudiante',
+  content:{
+    'application/json':{
+      schema: getModelSchemaRef(ModelInsertarRespuestasPreguntasEstudiantePrueba),
+    },
+  },
+})
+async RegistrarRespuestasPreguntasPruebaEstudiante(
+  @requestBody({
+    content:{
+      'application/json':{
+        schema: getModelSchemaRef(ModelInsertarRespuestasPreguntasEstudiantePrueba),
+      },
+    },
+  })
+  data: ModelInsertarRespuestasPreguntasEstudiantePrueba,
+):Promise<object>{
+  try{
+    //const sql =SQLConfig.crearContexto;
+
+    const sql = SQLConfig.RegistrarRespuestasPreguntasPruebaEstudiante;
+    const params =[
+      data.id_prueba,
+      data.id_estudiante,
+      data.preguntas_opciones,
+    ];
+    console.log(params);
+
+
+    const result = await this.genericRepository.dataSource.execute(sql, params);
+    //console.log(result[0]);
+    //console.log(result[0]);
+    //console.log(result[0].fun_insertar_contexto_json);
+    //console.log(result[0].fun_insert_torneo.id_torneo);
+    //FUN_REGISTRAR_RESPUESTA_PREGUNTA_ESTUDIANTE   fun_registrar_respuesta_pregunta_estudiante
+    if(result[0].fun_registrar_respuesta_pregunta_estudiante.CODIGO !=200){
+      return {
+        "CODIGO": result[0].fun_registrar_respuesta_pregunta_estudiante.CODIGO,
+        "MENSAJE": result[0].fun_registrar_respuesta_pregunta_estudiante.MENSAJE,
+        "DATOS": null
+      };
+    }
+    return {
+      "CODIGO": result[0].fun_registrar_respuesta_pregunta_estudiante.CODIGO,
+      "MENSAJE": result[0].fun_registrar_respuesta_pregunta_estudiante.MENSAJE,
+      "DATOS": result[0].fun_registrar_respuesta_pregunta_estudiante.DATOS
+    };
+  }catch(error){
+    return {
+      "CODIGO": 500,
+      "MENSAJE": "Error al insertar datos  del TORNEO en la funcion de postgres ERROR POSTGRES",
+      "DATOS": error
+    };
+  }
+}
+
 
 
 
