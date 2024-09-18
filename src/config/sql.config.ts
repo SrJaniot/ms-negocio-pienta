@@ -79,4 +79,8 @@ export namespace SQLConfig {
   export const ObtenerFinalizadasID: string = "SELECT FUN_OBTENER_FINALIZADAS_ESTUDIANTE_JSON($1);";
   export const ObtenerFechaInicioFinDuracionPrueba: string = "SELECT FUN_CAPTURAR_FECHA_INICIO_PRUEBA_ESTUDIANTE($1,$2);";
   export const RegistrarRespuestasPreguntasPruebaEstudiante: string = "SELECT FUN_REGISTRAR_RESPUESTA_PREGUNTA_ESTUDIANTE($1,$2,$3);";
+
+  //FUNCIONES PARA EL CONTROLADOR DE RESULTADOS ---------------------------------------------------------------------------------------------------------
+  export const ObtenerResultadosPruebaEstudiante: string = "SELECT FUN_OBTENER_PRUEBA_PRESENTADA_ESTUDIANTE_RESULTADOS_JSON($1,$2);";
+
 }
