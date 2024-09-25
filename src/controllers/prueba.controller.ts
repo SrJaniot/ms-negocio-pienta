@@ -258,6 +258,7 @@ async obtenerPruebaID(
 
 
 
+
  //METODO POST PARA MAtricular UN grupo a PRUEBA
 @post('/MatricularGrupoPrueba')
 @response(200, {

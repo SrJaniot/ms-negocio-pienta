@@ -82,5 +82,6 @@ export namespace SQLConfig {
 
   //FUNCIONES PARA EL CONTROLADOR DE RESULTADOS ---------------------------------------------------------------------------------------------------------
   export const ObtenerResultadosPruebaEstudiante: string = "SELECT FUN_OBTENER_PRUEBA_PRESENTADA_ESTUDIANTE_RESULTADOS_JSON($1,$2);";
-
+  export const ObtenerPruebasFinalizadas : string = "SELECT FUN_OBTENER_PRUEBAS_FINALIZADAS_JSON();";
+  export const ObtenerResultadosPrueba: string = "SELECT FUN_OBTENER_ANALISIS_PRUEBA_FINALIZADA_JSON($1);";
 }
