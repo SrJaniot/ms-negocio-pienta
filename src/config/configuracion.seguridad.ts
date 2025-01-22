@@ -4,5 +4,6 @@ export namespace ConfiguracionSeguridad{
     export const connection_user_postgres = process.env.CONNECTION_USER_POSTGRES ;
     export const connection_password_postgres = process.env.CONNECTION_PASSWORD_POSTGRES ;
     export const connection_database_postgres = process.env.CONNECTION_DATABASE_POSTGRES ;
-    
+    //
+
 }
