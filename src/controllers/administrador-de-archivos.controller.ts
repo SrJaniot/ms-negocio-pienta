@@ -25,6 +25,7 @@ import {ConfiguracionGeneral} from '../config/configuracion.general';
 
 import {authenticate} from '@loopback/authentication';
 import fs from 'fs';
+import {ConfiguracionSeguridad} from '../config/configuracion.seguridad';
 const readdir = promisify(fs.readdir);
 
 
@@ -33,8 +34,10 @@ export class AdministradorDeArchivosController {
 
 
 
-
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
   //@authenticate('auth')
   @post('/cargar-archivo-contexto', {
     responses: {
@@ -74,6 +77,10 @@ export class AdministradorDeArchivosController {
 
 
 
+  @authenticate({
+    strategy: 'auth',
+    options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+  })
   //@authenticate('auth')
   @post('/cargar-archivo-pregunta', {
     responses: {
@@ -112,7 +119,10 @@ export class AdministradorDeArchivosController {
 
 
 
-
+  @authenticate({
+    strategy: 'auth',
+    options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+  })
   //@authenticate('auth')
   @post('/cargar-archivo-opcion', {
     responses: {

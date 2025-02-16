@@ -5,6 +5,8 @@ import {GenericModel,   IdEntero,   ModelInsertAreaEstudio,   ModelInsertEstudia
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
+import {authenticate} from '@loopback/authentication';
+import {ConfiguracionSeguridad} from '../config/configuracion.seguridad';
 
 // import {inject} from '@loopback/core';
 
@@ -28,7 +30,10 @@ constructor(
 //METODO PARA CREAR UNA INSTITUCION
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/CrearInstitucion')
 @response(200, {
   description: 'creacion de un institucion',
@@ -90,7 +95,10 @@ async crearinstitucion(
 
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 // METODO PARA CREAR SEDES DE UNA INSTITUCION
 @post('/CrearSede')
 @response(200, {
@@ -150,6 +158,10 @@ async crearSede(
   }
 }
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 //METODO PARA OBTENERT UNA SEDE A PARTIR DE SU ID
 @get('/ObtenerSede/{id_sede}')
 @response(200, {
@@ -198,7 +210,10 @@ async obtenerContextoID(
 
 
 //METODO PARA ACTUALIZAR UNA SEDE POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarSede')
 @response(200, {
   description: 'Actualizar  un SEDE',
@@ -260,7 +275,10 @@ async Actualizarcontexto(
 
 
 //METODO PARA ELIMINAR UNA SEDE POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/EliminarSede')
 @response(200, {
   description: 'eliminar  una sede',
@@ -318,6 +336,10 @@ async Eliminarcontexto(
 
 
  //METODO GET PARA OBTENER DATOS DE LA TABLA SEDE USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
  @get('/ObtenerSedes')
  @response(200, {
    description: 'Obtener Sedes',
@@ -364,7 +386,10 @@ async Eliminarcontexto(
 
 
 //METODO PARA CREAR TAB_AREA_ESTUDIO
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/CrearAreaEstudio')
 @response(200, {
   description: 'creacion de un Area de estudio',
@@ -423,7 +448,10 @@ async crearAreaEstudio(
 }
 
 //METODO GET PARA OBTENER UNA AREA ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @get('/ObtenerAreaEstudio/{id_area_estudio}')
 @response(200, {
  description: 'Obtener Area Estudio por id',
@@ -473,7 +501,10 @@ async obtenerAreaEstudioID(
 
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
  //METODO GET PARA OBTENER DATOS DE LA TABLA AREA ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
  @get('/ObtenerAreasEstudio')
  @response(200, {
@@ -517,7 +548,10 @@ async obtenerAreaEstudioID(
 
 
 //METODO PARA ACTUALIZAR UNA AREA ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarAreaEstudio')
 @response(200, {
   description: 'Actualizar  un Area Estudio',
@@ -576,7 +610,10 @@ async ActualizarAreaEstudio(
 
 
 //METODO PARA ELIMINAR UNA AREA ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/EliminarAreaEstudio')
 @response(200, {
   description: 'eliminar  una Area Estudio',
@@ -636,7 +673,10 @@ async EliminarAreaEstudio(
 
 
 //METODO PARA CREAR PROGRAMA_ESTUDIO
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 
 @post('/CrearProgramaEstudio')
 @response(200, {
@@ -699,7 +739,10 @@ async crearProgramaEestudio(
 
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
  //METODO GET PARA OBTENER DATOS DE LA TABLA PROGRAMA ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
  @get('/ObtenerProgramasEstudio')
  @response(200, {
@@ -746,7 +789,10 @@ async crearProgramaEestudio(
 
 
 //METODO GET PARA OBTENER UNA PROGRAMA ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @get('/ObtenerProgramaEstudio/{id_programa_estudio}')
 @response(200, {
  description: 'Obtener programa Estudio por id',
@@ -797,7 +843,10 @@ async obtenerProgramaEstudioID(
 
 
 //METODO PARA ACTUALIZAR UNA Programa ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarProgramaEstudio')
 @response(200, {
   description: 'Actualizar  un Programa Estudio',
@@ -860,7 +909,10 @@ async ActualizarProgramaEstudio(
 
 
 //METODO PARA ELIMINAR UNA PROGRAMA ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/EliminarProgramaEstudio')
 @response(200, {
   description: 'eliminar  una programa Estudio',
@@ -931,7 +983,10 @@ async EliminarProgramaEstudio(
 //METODO PARA CREAR GRUPO_ESTUDIO
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/CrearGrupoEstudio')
 @response(200, {
   description: 'creacion de un grupo de estudio',
@@ -998,6 +1053,10 @@ async crearGrupoEestudio(
 
 
  //METODO GET PARA OBTENER DATOS DE LA TABLA GRUPO ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.listarAccion]
+})
  @get('/ObtenerGruposEstudio')
  @response(200, {
    description: 'Obtener grupos de estudio',
@@ -1043,7 +1102,10 @@ async crearGrupoEestudio(
 
 
 //METODO GET PARA OBTENER UNA GRUPO ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.listarAccion]
+})
 @get('/ObtenerGrupoEstudio/{id_grupo_estudio}')
 @response(200, {
  description: 'Obtener Grupo Estudio por id',
@@ -1092,7 +1154,10 @@ async obtenerGrupoEstudioID(
 
 
 //METODO PARA ACTUALIZAR UNA GRUPO ESTUDIO POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarGrupoEstudio')
 @response(200, {
   description: 'Actualizar  un Grupo Estudio',
@@ -1152,7 +1217,11 @@ async ActualizarGrupoEstudio(
 
 
 //METODO PARA ELIMINAR UNA GRUPO ESTUDIO POR ID
-
+ //METODO GET PARA OBTENER DATOS DE LA TABLA GRUPO ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/EliminarGrupoEstudio')
 @response(200, {
   description: 'eliminar  un grupo Estudio',
@@ -1211,7 +1280,10 @@ async EliminarGrupoEstudio(
 
 
 //METODO PARA CREAR Estudiante
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/CrearEstudiante')
 @response(200, {
   description: 'creacion de un Estudiante',
@@ -1278,6 +1350,10 @@ async crearEstudiante(
 
 
  //METODO GET PARA OBTENER DATOS DE LA TABLA ESTUDIANTE ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.listarAccion]
+})
  @get('/ObtenerEstudiantes')
  @response(200, {
    description: 'Obtener estudiantes',
@@ -1322,7 +1398,10 @@ async crearEstudiante(
 
 
 //METODO GET PARA OBTENER UN ESTUDIANTE POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.listarAccion]
+})
 @get('/ObtenerEstudiante/{id_estudiante}')
 @response(200, {
  description: 'Obtener Estudiante por id',
@@ -1371,7 +1450,10 @@ async obtenerEstudianteID(
 
 
 //METODO PARA ACTUALIZAR UN ESTUDIANTE POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarEstudiante')
 @response(200, {
   description: 'Actualizar  un Estudiante',
@@ -1453,6 +1535,10 @@ async ActualizarEstudiante(
 
 
 //METODO GET PARA OBTENER TODAS LAS INSTITUCIONES
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
  @get('/ObtenerInstituciones')
  @response(200, {
    description: 'Obtener Instituciones',
@@ -1497,7 +1583,10 @@ async ActualizarEstudiante(
 
 
  //METODO PARA CREAR Estudiante
-
+ @authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/CrearTutor')
 @response(200, {
   description: 'creacion de un tutor',
@@ -1564,6 +1653,10 @@ async crearTutor(
 
 
  //METODO GET PARA OBTENER DATOS DE LA TABLA ESTUDIANTE ESTUDIO USANDO EL REPOSITORIO GENERICO NO PIDO PARAMETROS
+ @authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
  @get('/ObtenerTutores')
  @response(200, {
    description: 'Obtener Tutores',
@@ -1608,6 +1701,10 @@ async crearTutor(
 
 
 //METODO GET PARA OBTENER UN Turtor POR ID
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 
 @get('/ObtenerTutor/{id_tutor}')
 @response(200, {
@@ -1657,7 +1754,10 @@ async obtenerTutorID(
 
 
 //METODO PARA ACTUALIZAR UN ESTUDIANTE POR ID
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuinstitucion, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarTutor')
 @response(200, {
   description: 'Actualizar  un Estudiante',

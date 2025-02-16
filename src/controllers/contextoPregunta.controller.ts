@@ -5,6 +5,8 @@ import {GenericModel,  IdEntero,  ModelInsertContexto, ModelInsertOpcion, ModelI
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
+import {authenticate} from '@loopback/authentication';
+import {ConfiguracionSeguridad} from '../config/configuracion.seguridad';
 
 // import {inject} from '@loopback/core';
 
@@ -31,6 +33,10 @@ constructor(
 //METODO PARA CREAR UN CONTEXTO
 
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/CrearContexto')
 @response(200, {
   description: 'creacion de un Contexto',
@@ -92,6 +98,10 @@ async crearcontexto(
 
 
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 
 @post('/CrearPregunta')
 @response(200, {
@@ -157,6 +167,10 @@ async crearpregunta(
 
 
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/CrearOpcion')
 @response(200, {
   description: 'creacion de una opcion de la pregunta',
@@ -306,6 +320,11 @@ async obtenerContextoID(
 
 //METODO PARA ACTUALIZAR UN CONTEXTO POR ID
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
+
 @post('/ActualizarContexto')
 @response(200, {
   description: 'Actualizar  un Contexto',
@@ -367,6 +386,11 @@ async Actualizarcontexto(
 
 //METODO PARA ELIMINAR UN CONTEXTO POR ID
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
+
 @post('/EliminarContexto')
 @response(200, {
   description: 'eliminar  un Contexto',
@@ -421,6 +445,11 @@ async Eliminarcontexto(
 }
 
 //METODO PARA RELACIONAR UNA PREGUNTA CON UN TEMA DE AREA
+
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 
 @post('/Relacionar-Pregunta-tema')
 @response(200, {
@@ -478,6 +507,11 @@ async relacionar_pregunta_area(
 
 
 //METODO PARA RELACIONAR UNA PREGUNTA CON UN TEMA DE AREA UPDATE
+
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 
 @post('/Relacionar-Pregunta-tema-UPDATE')
 @response(200, {
@@ -626,6 +660,10 @@ async obtenerPreguntaID(
 
 //METODO PARA ACTUALIZAR UN PREGUNTA POR ID
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarPregunta')
 @response(200, {
   description: 'Actualizar  una Pregunta',
@@ -691,6 +729,10 @@ async ActualizarPregunta(
 
 //METODO PARA ELIMINAR UN PREGUNTA POR ID
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/EliminarPregunta')
 @response(200, {
   description: 'eliminar una pregunta',
@@ -843,6 +885,10 @@ async obtenerOpcionID(
 
 //METODO PARA ACTUALIZAR UN Opcion POR ID
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/ActualizarOpcion')
 @response(200, {
   description: 'Actualizar una Opcion',
@@ -905,6 +951,10 @@ async ActualizarOpcion(
 
 //METODO PARA ELIMINAR UN OPCION POR ID
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupreguntas, ConfiguracionSeguridad.guardarAccion]
+})
 @post('/EliminarOpcion')
 @response(200, {
   description: 'eliminar una opcion',

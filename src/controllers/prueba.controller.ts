@@ -5,6 +5,8 @@ import {GenericModel,   IdEntero, ModelInsertarRespuestasPreguntasEstudiantePrue
 import {inject} from '@loopback/core';
 import {get, getModelSchemaRef, param, post, requestBody, response} from '@loopback/rest';
 import {SQLConfig} from '../config/sql.config';
+import {authenticate} from '@loopback/authentication';
+import {ConfiguracionSeguridad} from '../config/configuracion.seguridad';
 
 // import {inject} from '@loopback/core';
 
@@ -23,6 +25,12 @@ constructor(
     dataSource
   );
 }
+
+
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuprueba, ConfiguracionSeguridad.guardarAccion]
+})
 //METODO POST PARA CREAR UNA PRUEBA GENERICA
 @post('/CrearPruebaGenerica')
 @response(200, {
@@ -90,6 +98,10 @@ async crearPruebaGenerica(
   }
 }
 
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuprueba, ConfiguracionSeguridad.guardarAccion]
+})
 //METODO POST PARA CREAR UNA PRUEBA GENERICA TYT
 @post('/CrearPruebaGenericaTYT')
 @response(200, {
@@ -258,7 +270,10 @@ async obtenerPruebaID(
 
 
 
-
+ @authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuprueba, ConfiguracionSeguridad.guardarAccion]
+})
  //METODO POST PARA MAtricular UN grupo a PRUEBA
 @post('/MatricularGrupoPrueba')
 @response(200, {
@@ -315,7 +330,10 @@ async MatricularGrupoPrueba(
 }
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuprueba, ConfiguracionSeguridad.guardarAccion]
+})
  //METODO POST PARA MAtricular UN ESTUDIANTE a PRUEBA
  @post('/MatricularEstudiantePrueba')
 @response(200, {
@@ -686,7 +704,10 @@ async ObtenerFechaInicioFinDuracionPrueba(
  }
 }
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menuprueba, ConfiguracionSeguridad.guardarAccion]
+})
 //METODO POST PARA CREAR UNA PRUEBA Custom
 @post('/CrearPruebaCustom')
 @response(200, {
@@ -759,7 +780,10 @@ async crearPruebaCustom(
 }
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupruebaestudiantes, ConfiguracionSeguridad.guardarAccion]
+})
 //METODO POST PARA REGISTRAR LA FECHA DE INICIO DE UNA PRUEBA DE UN ESTUDIANTE
 @post('/RegistrarFechaInicioPrueba')
 @response(200, {
@@ -838,7 +862,10 @@ async RegistrarFechaInicioPrueba(
 
 
 
-
+@authenticate({
+  strategy: 'auth',
+  options: [ConfiguracionSeguridad.menupruebaestudiantes, ConfiguracionSeguridad.guardarAccion]
+})
 //METODO POST PARA CREAR UNA PRUEBA Custom
 @post('/RegistrarRespuestasPreguntasPruebaEstudiante')
 @response(200, {
@@ -872,7 +899,7 @@ async RegistrarRespuestasPreguntasPruebaEstudiante(
 
 
     const result = await this.genericRepository.dataSource.execute(sql, params);
-    //console.log(result[0]);
+    console.log(result[0]);
     //console.log(result[0]);
     //console.log(result[0].fun_insertar_contexto_json);
     //console.log(result[0].fun_insert_torneo.id_torneo);

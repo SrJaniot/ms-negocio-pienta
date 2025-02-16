@@ -37,8 +37,8 @@ export class AuthStrategy implements AuthenticationStrategy {
     if (token) {
       let idMenu: string = this.metadata[0].options![0];
       let accion: string = this.metadata[0].options![1];
-      //console.log(this.metadata);
-      //console.log(token);
+      console.log(this.metadata);
+      console.log(token);
 
       const datos = {token: token, idMenu: idMenu, accion: accion};
       const urlValidarPermisos = `${ConfiguracionSeguridad.hostSeguridad}/validar-permisos`;
@@ -51,8 +51,8 @@ export class AuthStrategy implements AuthenticationStrategy {
         }).then((res: any) => res.json())
           .then((json: any) => {
             res = json;
-            //console.log(res)
-            //console.log(res.permitido)
+            console.log(res)
+            console.log(res.permitido)
 
           });
         if (res!.permitido === 'OK') {
@@ -66,6 +66,7 @@ export class AuthStrategy implements AuthenticationStrategy {
           return undefined;
         }
       } catch (e) {
+        console.log(e);
         throw new HttpErrors[401]("No se tiene permisos sobre la acción a ejecutar.");
       }
     }
