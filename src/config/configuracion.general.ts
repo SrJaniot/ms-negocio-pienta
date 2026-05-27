@@ -15,5 +15,4 @@ export namespace ConfiguracionGeneral {
   ];
   //-------------------------servidor -------------------------------------
   export const puertoServidor: number = 3001;
-  export const direccionServidor: string = " http://localhost";
 }

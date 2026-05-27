@@ -1,5 +1,6 @@
 // esta estrategia la saque de loopback 4  https://loopback.io/doc/en/lb4/Implement-your-own-strategy.html
 // instalar npm i @loopback/authentication, npm i @loopback/security, npm i parse-bearer-token
+//despues de crear esto agregar la estrategia al final del aplicacion.ts
 import {AuthenticationStrategy} from '@loopback/authentication';
 import {AuthenticationBindings} from '@loopback/authentication/dist/keys';
 import {AuthenticationMetadata} from '@loopback/authentication/src/types';
